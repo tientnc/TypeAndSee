@@ -3632,7 +3632,7 @@ wheels = [
 
 [[package]]
 name = "typeandsee"
-version = "0.2.0"
+version = "0.3.0"
 source = { editable = "." }
 dependencies = [
     { name = "chromadb" },
@@ -3653,6 +3653,7 @@ dependencies = [
 test = [
     { name = "httpx" },
     { name = "pytest" },
+    { name = "websocket-client" },
 ]
 
 [package.metadata]
@@ -3669,6 +3670,7 @@ requires-dist = [
     { name = "torch", specifier = ">=2.5,<3", index = "https://download.pytorch.org/whl/cpu" },
     { name = "torchvision", specifier = ">=0.20,<1", index = "https://download.pytorch.org/whl/cpu" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.30,<1" },
+    { name = "websocket-client", marker = "extra == 'test'", specifier = ">=1.8,<2" },
 ]
 provides-extras = ["test"]
 

@@ -1,0 +1,72 @@
+[
+  {
+    "id": "demo-cat",
+    "asset": "./demo/cat.jpg",
+    "name": "A cat in the garden",
+    "caption": "A cat in the garden",
+    "model": "6b7c523703ae26e39be4b03774966f8571c7f523-q8",
+    "credit": {
+      "artist": "Alvesgaspar",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Cat_November_2010-1a.jpg",
+      "modifications": "Resized and recompressed for the demo."
+    }
+  },
+  {
+    "id": "demo-dog",
+    "asset": "./demo/dog.jpg",
+    "name": "A golden retriever outside",
+    "caption": "A golden retriever outside",
+    "model": "6b7c523703ae26e39be4b03774966f8571c7f523-q8",
+    "credit": {
+      "artist": "Dirk Vorderstra\u00dfe",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Golden_Retriever_Carlos_(10581910556).jpg",
+      "modifications": "Resized and recompressed for the demo."
+    }
+  },
+  {
+    "id": "demo-mountains",
+    "asset": "./demo/mountains.jpg",
+    "name": "Mountains beside a blue lake",
+    "caption": "Mountains beside a blue lake",
+    "model": "6b7c523703ae26e39be4b03774966f8571c7f523-q8",
+    "credit": {
+      "artist": "Hannes R\u00f6st",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Fronalpstock_big.jpg",
+      "modifications": "Resized and recompressed for the demo."
+    }
+  },
+  {
+    "id": "demo-bicycles",
+    "asset": "./demo/bicycles.jpg",
+    "name": "Bicycles parked outside",
+    "caption": "Bicycles parked outside",
+    "model": "6b7c523703ae26e39be4b03774966f8571c7f523-q8",
+    "credit": {
+      "artist": "Pratap555",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Three_rusty_bicycles.jpg",
+      "modifications": "Resized and recompressed for the demo."
+    }
+  },
+  {
+    "id": "demo-juice",
+    "asset": "./demo/juice.jpg",
+    "name": "A glass of orange juice",
+    "caption": "A glass of orange juice",
+    "model": "6b7c523703ae26e39be4b03774966f8571c7f523-q8",
+    "credit": {
+      "artist": "Agricultural Research Service",
+      "license": "Public domain",
+      "licenseUrl": "",
+      "source": "https://commons.wikimedia.org/wiki/File:Orange_juice_1.jpg",
+      "modifications": "Resized and recompressed for the demo."
+    }
+  }
+]

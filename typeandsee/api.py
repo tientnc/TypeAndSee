@@ -5,6 +5,7 @@ import secrets
 import time
 import uuid
 from functools import lru_cache
+from importlib.metadata import version
 from pathlib import Path
 
 from fastapi import Depends, FastAPI, File, Form, Header, HTTPException, Query, UploadFile
@@ -15,7 +16,7 @@ from .core import MAX_UPLOAD_BYTES, SearchService, explain
 
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 logger = logging.getLogger("typeandsee")
-app = FastAPI(title="TypeAndSee", version="0.1.0")
+app = FastAPI(title="TypeAndSee", version=version("typeandsee"))
 STATIC = Path(__file__).parent / "static"
 
 
