@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="230" viewBox="0 0 1120 230" role="img" aria-label="Query and images are encoded by CLIP. Chroma retrieves similar images. The gallery shows results, with optional grounded explanations from captions and metadata.">
+  <rect width="1120" height="230" rx="18" fill="#0b1220"/>
+  <g font-family="Arial, sans-serif" text-anchor="middle">
+    <rect x="32" y="55" width="220" height="120" rx="14" fill="#152238" stroke="#425676"/>
+    <text x="142" y="103" fill="#e8edf5" font-size="20" font-weight="bold">Query + images</text>
+    <text x="142" y="135" fill="#a7b4c8" font-size="14">Natural language and uploads</text>
+    <rect x="312" y="55" width="220" height="120" rx="14" fill="#152238" stroke="#425676"/>
+    <text x="422" y="103" fill="#e8edf5" font-size="20" font-weight="bold">CLIP</text>
+    <text x="422" y="135" fill="#a7b4c8" font-size="14">Shared embeddings</text>
+    <rect x="592" y="55" width="220" height="120" rx="14" fill="#152238" stroke="#425676"/>
+    <text x="702" y="103" fill="#e8edf5" font-size="20" font-weight="bold">Chroma</text>
+    <text x="702" y="135" fill="#a7b4c8" font-size="14">Vector search</text>
+    <rect x="872" y="55" width="220" height="120" rx="14" fill="#152238" stroke="#425676"/>
+    <text x="982" y="103" fill="#e8edf5" font-size="20" font-weight="bold">Results</text>
+    <text x="982" y="135" fill="#a7b4c8" font-size="14">Gallery + optional RAG</text>
+  </g>
+  <g fill="none" stroke="#64d8c1" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M260 115h40m-12-10 12 10-12 10"/>
+    <path d="M540 115h40m-12-10 12 10-12 10"/>
+    <path d="M820 115h40m-12-10 12 10-12 10"/>
+  </g>
+</svg>

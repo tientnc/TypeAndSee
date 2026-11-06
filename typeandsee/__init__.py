@@ -1,0 +1,1 @@
+"""Semantic image search application."""
