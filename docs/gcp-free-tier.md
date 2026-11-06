@@ -2,11 +2,13 @@
 
 This setup serves a **public demo**. Visitors can search and view images without an account. Only a holder of the upload token can add images. Use public demo images, since anyone with the URL can see them.
 
+**Strict $0 requirement:** Deploy only if you are eligible for a new Google Cloud [Free Trial billing account](https://docs.cloud.google.com/free/docs/free-cloud-features), and do not upgrade it to a Paid billing account. Google says the Free Trial does not bill you and stops resources when its 90 days or $300 credit ends. This is a temporary demo, not permanent hosting. If you already have a Paid billing account, do not follow the deployment steps under a strict $0 requirement.
+
 The free tier has limits, not a guaranteed zero bill. Cloud Run, Firestore, and Cloud Storage have free allowances. Artifact Registry, network traffic, logs, and usage beyond allowances can incur charges. Create a budget alert before deployment and keep a small demo library. A large personal photo collection will exceed the free storage allowance. [Cloud Run spend caps](https://docs.cloud.google.com/billing/docs/how-to/budgets-spend-caps) are available for eligible projects, but they do not cover Firestore, Cloud Storage, or Artifact Registry, and enforcement can lag.
 
 ## 1. Create a project
 
-In the [Google Cloud Console](https://console.cloud.google.com/projectcreate), create a new project with a unique ID. Link a billing account when prompted. Then open the [billing budgets page](https://console.cloud.google.com/billing/budgets) and create a low budget with email alerts. Alerts alone do not stop spending. If the Console offers a Cloud Run spend cap for your project, configure one as an additional guardrail.
+Start the [Google Cloud Free Trial](https://cloud.google.com/free) if you are eligible. In the [Google Cloud Console](https://console.cloud.google.com/projectcreate), create a new project with a unique ID and link the **Free Trial billing account**. Do not upgrade to Paid. Then open the [billing budgets page](https://console.cloud.google.com/billing/budgets) to monitor credit use. The Free Trial account type, rather than a budget alert, is what prevents a bill. If the Console offers a Cloud Run spend cap for your project, you can configure one as an additional guardrail.
 
 Install a current Google Cloud CLI, then run:
 
