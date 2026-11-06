@@ -2,11 +2,11 @@
 
 This setup serves a **public demo**. Visitors can search and view images without an account. Only a holder of the upload token can add images. Use public demo images, since anyone with the URL can see them.
 
-The free tier has limits, not a guaranteed zero bill. Cloud Run, Firestore, and Cloud Storage have free allowances. Artifact Registry, network traffic, logs, and usage beyond allowances can incur charges. Create a budget alert before deployment and keep a small demo library. A large personal photo collection will exceed the free storage allowance.
+The free tier has limits, not a guaranteed zero bill. Cloud Run, Firestore, and Cloud Storage have free allowances. Artifact Registry, network traffic, logs, and usage beyond allowances can incur charges. Create a budget alert before deployment and keep a small demo library. A large personal photo collection will exceed the free storage allowance. [Cloud Run spend caps](https://docs.cloud.google.com/billing/docs/how-to/budgets-spend-caps) are available for eligible projects, but they do not cover Firestore, Cloud Storage, or Artifact Registry, and enforcement can lag.
 
 ## 1. Create a project
 
-In the [Google Cloud Console](https://console.cloud.google.com/projectcreate), create a new project with a unique ID. Link a billing account when prompted. Then open the [billing budgets page](https://console.cloud.google.com/billing/budgets) and create a low budget with email alerts. Budget alerts notify you; they do not stop spending.
+In the [Google Cloud Console](https://console.cloud.google.com/projectcreate), create a new project with a unique ID. Link a billing account when prompted. Then open the [billing budgets page](https://console.cloud.google.com/billing/budgets) and create a low budget with email alerts. Alerts alone do not stop spending. If the Console offers a Cloud Run spend cap for your project, configure one as an additional guardrail.
 
 Install a current Google Cloud CLI, then run:
 
@@ -69,4 +69,4 @@ The service URL is public. Search and image viewing are public. Uploads need the
 
 ## 5. Verify and watch usage
 
-Open the Cloud Run URL, upload one demo image with the token, and search for it. Review Cloud Run logs and the billing dashboard after the test. The `--max-instances 1` setting limits concurrent server instances, but it is not a spending cap. If you need strict zero-cost behavior, do not deploy a public service without an external hard usage control.
+Open the Cloud Run URL, upload one demo image with the token, and search for it. Review Cloud Run logs and the billing dashboard after the test. The `--max-instances 1` setting limits concurrent server instances, but it is not a spending cap. No combination of the listed free allowances and a Cloud Run spend cap guarantees a zero bill for this public deployment.
