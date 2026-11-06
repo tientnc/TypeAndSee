@@ -12,7 +12,7 @@
     <text x="702" y="135" fill="#a7b4c8" font-size="14">Vector search</text>
     <rect x="872" y="55" width="220" height="120" rx="14" fill="#152238" stroke="#425676"/>
     <text x="982" y="103" fill="#e8edf5" font-size="20" font-weight="bold">Results</text>
-    <text x="982" y="135" fill="#a7b4c8" font-size="14">Gallery + optional RAG</text>
+    <text x="982" y="135" fill="#a7b4c8" font-size="14">Ranked image gallery</text>
   </g>
   <g fill="none" stroke="#64d8c1" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
     <path d="M260 115h40m-12-10 12 10-12 10"/>

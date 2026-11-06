@@ -4,13 +4,13 @@ Search photos with a description, such as **"a red bicycle beside a café"**.
 
 [Open the browser demo](https://tientnc.github.io/TypeAndSee/). Search runs on your device, with no account or API key.
 
-![TypeAndSee search interface](docs/ui.png)
+![TypeAndSee browser search](docs/browser-demo.png)
 
-*The browser interface for image upload, natural language search, and optional explanations.*
+*Live browser search. [Sample image credits](web/credits.html).*
 
 ![Image search flow](docs/flow.svg)
 
-*CLIP creates image and text embeddings. Chroma searches locally; Firestore supports GCP deployment. Captions and metadata can support an optional generated explanation.*
+*Browser demo: CLIP and Orama. Python API: CLIP with Chroma or Firestore, plus optional grounded explanations.*
 
 ```bash
 uv sync --extra test
