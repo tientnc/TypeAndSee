@@ -8,7 +8,7 @@ Search photos with a description, such as **"a red bicycle beside a café"**.
 
 ![Image search flow](docs/flow.svg)
 
-*CLIP creates image and text embeddings. Chroma retrieves similar images. Captions and metadata can support an optional generated explanation.*
+*CLIP creates image and text embeddings. Chroma searches locally; Firestore supports GCP deployment. Captions and metadata can support an optional generated explanation.*
 
 ```bash
 uv sync --extra test

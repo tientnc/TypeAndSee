@@ -68,7 +68,8 @@ class MediaStore:
     def put(self, image_id, raw, extension):
         key = f"{image_id}{extension}"
         if self.bucket_name:
-            self.bucket.blob(key).upload_from_string(raw, content_type=f"image/{extension[1:]}")
+            content_type = {".jpg": "image/jpeg", ".png": "image/png", ".webp": "image/webp"}[extension]
+            self.bucket.blob(key).upload_from_string(raw, content_type=content_type)
         else:
             path = self.local_path / key
             if not path.exists():
@@ -84,24 +85,29 @@ class MediaStore:
 class SearchService:
     def __init__(self, encoder=None, collection=None, media=None):
         if collection is None:
-            import chromadb
+            if os.getenv("VECTOR_BACKEND") == "firestore":
+                from .firestore_index import FirestoreIndex
 
-            host = os.getenv("CHROMA_HOST")
-            if host:
-                client = chromadb.HttpClient(
-                    host=host,
-                    port=int(os.getenv("CHROMA_PORT", "8000")),
-                    ssl=os.getenv("CHROMA_SSL", "false").lower() == "true",
-                    headers={"Authorization": f"Bearer {os.environ['CHROMA_TOKEN']}"}
-                    if os.getenv("CHROMA_TOKEN") else None,
-                )
+                collection = FirestoreIndex()
             else:
-                path = Path(os.getenv("DATA_DIR", "data")) / "chroma"
-                path.mkdir(parents=True, exist_ok=True)
-                client = chromadb.PersistentClient(path=str(path))
-            collection = client.get_or_create_collection(
-                name="images_v1", metadata={"hnsw:space": "cosine"}
-            )
+                import chromadb
+
+                host = os.getenv("CHROMA_HOST")
+                if host:
+                    client = chromadb.HttpClient(
+                        host=host,
+                        port=int(os.getenv("CHROMA_PORT", "8000")),
+                        ssl=os.getenv("CHROMA_SSL", "false").lower() == "true",
+                        headers={"Authorization": f"Bearer {os.environ['CHROMA_TOKEN']}"}
+                        if os.getenv("CHROMA_TOKEN") else None,
+                    )
+                else:
+                    path = Path(os.getenv("DATA_DIR", "data")) / "chroma"
+                    path.mkdir(parents=True, exist_ok=True)
+                    client = chromadb.PersistentClient(path=str(path))
+                collection = client.get_or_create_collection(
+                    name="images_v1", metadata={"hnsw:space": "cosine"}
+                )
         self.collection = collection
         self.encoder = encoder or ImageEncoder()
         self.media = media or MediaStore()
@@ -130,11 +136,11 @@ class SearchService:
         if trace is not None:
             trace.append({"step": "embedding", "ms": round((time.perf_counter() - start) * 1000, 2)})
         start = time.perf_counter()
-        count = self.collection.count()
-        if not count:
+        count = self.collection.count() if hasattr(self.collection, "count") else None
+        if count == 0:
             return []
         found = self.collection.query(
-            query_embeddings=[embedding], n_results=min(limit, count),
+            query_embeddings=[embedding], n_results=min(limit, count) if count is not None else limit,
             include=["metadatas", "distances"],
         )
         if trace is not None:

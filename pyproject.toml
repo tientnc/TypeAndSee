@@ -1,6 +1,6 @@
 [project]
 name = "typeandsee"
-version = "0.1.0"
+version = "0.2.0"
 requires-python = ">=3.11"
 dependencies = [
   "fastapi>=0.115,<1",
@@ -10,6 +10,7 @@ dependencies = [
   "open-clip-torch>=2.30,<4",
   "Pillow>=10,<13",
   "google-cloud-storage>=2.18,<4",
+  "google-cloud-firestore>=2.19,<3",
   "torch>=2.5,<3",
   "torchvision>=0.20,<1",
 ]

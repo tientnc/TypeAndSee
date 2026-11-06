@@ -24,8 +24,10 @@ def service():
     return SearchService()
 
 
-def authorize(authorization: str | None = Header(default=None)):
+def authorize_upload(authorization: str | None = Header(default=None)):
     expected = os.getenv("APP_API_TOKEN")
+    if os.getenv("APP_REQUIRE_UPLOAD_AUTH", "false").lower() == "true" and not expected:
+        raise HTTPException(status_code=503, detail="Upload authentication is not configured")
     if expected and not secrets.compare_digest(authorization or "", f"Bearer {expected}"):
         raise HTTPException(status_code=401, detail="Valid bearer token required")
 
@@ -49,7 +51,12 @@ def healthz():
     return {"status": "ok"}
 
 
-@app.post("/api/images", dependencies=[Depends(authorize)])
+@app.get("/api/config")
+def public_config():
+    return {"explanations_enabled": bool(os.getenv("GEMINI_API_KEY"))}
+
+
+@app.post("/api/images", dependencies=[Depends(authorize_upload)])
 async def upload(file: UploadFile = File(...), caption: str = Form(""), tags: str = Form("")):
     raw = await file.read(MAX_UPLOAD_BYTES + 1)
     try:
@@ -61,7 +68,7 @@ async def upload(file: UploadFile = File(...), caption: str = Form(""), tags: st
         raise HTTPException(status_code=503, detail="Image indexing failed")
 
 
-@app.get("/api/images/{image_id}", dependencies=[Depends(authorize)])
+@app.get("/api/images/{image_id}")
 def get_image(image_id: str):
     if len(image_id) != 64 or any(ch not in "0123456789abcdef" for ch in image_id):
         raise HTTPException(status_code=404, detail="Image not found")
@@ -72,7 +79,7 @@ def get_image(image_id: str):
     return Response(content=raw, media_type=media_type, headers={"Cache-Control": "private, max-age=3600"})
 
 
-@app.get("/api/search", dependencies=[Depends(authorize)])
+@app.get("/api/search")
 def search(q: str = Query(min_length=1, max_length=500), k: int = Query(12, ge=1, le=50), explain_matches: bool = False):
     trace_id = uuid.uuid4().hex
     trace = []
