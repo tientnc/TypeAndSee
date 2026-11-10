@@ -2,7 +2,7 @@
   "measured_at": "2026-11-10",
   "environment": "Chrome headless, CPU, Linux. Retrieval timing excludes catalogue loading and optional request model download.",
   "catalogue_count": 1809,
-  "catalogue_sha256": "4c7360632e18f31267397eef1807068d874d37d08d7cae0d7603429b3103bf62",
+  "catalogue_sha256": "9dff7b41392d8e0cd588c47aaa9ca431fe14e5e99685755407b2b764ac1545ec",
   "description": "Small manually labeled content-relevance suite. Labels are not exhaustive and do not measure personal enjoyment.",
   "k": 12,
   "details": [

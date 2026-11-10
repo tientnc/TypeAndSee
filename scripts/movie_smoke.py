@@ -103,12 +103,34 @@ def main():
         restored = json.loads(browser.evaluate('JSON.stringify(movieApp.snapshot())'))
         assert restored['profile'] == imported['profile']
         report['checks']['reload_persistence'] = 'passed'
-        browser.evaluate("document.getElementById('map-view').click()")
-        assert browser.evaluate("document.querySelectorAll('.map-dot').length") == count
-        browser.evaluate("document.querySelector('.map-dot.recommended').dispatchEvent(new MouseEvent('click',{bubbles:true}))")
+        assert browser.evaluate("movieApp.space.movies.every(movie => movie.projection.length === 3)")
+        assert browser.evaluate("movieApp.space.screenPoints.length") == count
+        assert browser.evaluate("movieApp.space.selected.size") == 5
+        assert browser.evaluate("!movieApp.space.showSuggestions")
+        browser.evaluate("document.getElementById('tab-suggestions').click()")
+        assert browser.evaluate("movieApp.space.showSuggestions && !document.getElementById('panel-suggestions').hidden")
+        browser.evaluate("movieApp.space.focus(movieApp.snapshot().results[0].id)")
+        time.sleep(.6)
+        point = browser.evaluate("(() => { const space=movieApp.space; const point=space.screenPoints.find(p=>p.movie.id===space.focused); const rect=document.getElementById('movie-map').getBoundingClientRect(); return {x:rect.left+point.x,y:rect.top+point.y}; })()")
+        browser.call('Input.dispatchMouseEvent', {'type':'mousePressed', **point, 'button':'left','clickCount':1})
+        browser.call('Input.dispatchMouseEvent', {'type':'mouseReleased', **point, 'button':'left','clickCount':1})
         assert browser.evaluate("document.getElementById('film-dialog').open")
         assert browser.evaluate("document.querySelector('#film-detail .source-link').href.startsWith('https://en.wikipedia.org/')")
-        browser.evaluate("document.getElementById('close-dialog').click(); document.getElementById('cards-view').click()")
+        browser.evaluate("document.getElementById('close-dialog').click()")
+        rotation = browser.evaluate('movieApp.space.rotation.y')
+        browser.call('Input.dispatchMouseEvent', {'type':'mousePressed','x':800,'y':300,'button':'left','clickCount':1})
+        browser.call('Input.dispatchMouseEvent', {'type':'mouseMoved','x':900,'y':340,'button':'left','buttons':1})
+        browser.call('Input.dispatchMouseEvent', {'type':'mouseReleased','x':900,'y':340,'button':'left','clickCount':1})
+        assert browser.evaluate('movieApp.space.rotation.y') != rotation
+        distance = browser.evaluate('movieApp.space.distance')
+        browser.call('Input.dispatchMouseEvent', {'type':'mouseWheel','x':800,'y':300,'deltaX':0,'deltaY':100})
+        time.sleep(.1)
+        assert browser.evaluate('movieApp.space.distance') > distance
+        browser.evaluate("document.getElementById('reset-space').click()")
+        assert browser.evaluate('movieApp.space.distance') == 3.4
+        browser.evaluate("document.getElementById('tab-list').click()")
+        assert browser.evaluate("!movieApp.space.showSuggestions && !document.getElementById('panel-list').hidden")
+        browser.evaluate("document.getElementById('tab-add').click()")
         report['checks']['movie_map_and_sources'] = 'passed'
 
         cases = json.loads((ROOT / 'catalogue/evaluation.json').read_text())

@@ -15,6 +15,6 @@ uv run hf download Xenova/all-MiniLM-L6-v2 onnx/model_quantized.onnx tokenizer.j
 OPENBLAS_NUM_THREADS=2 uv run python scripts/build_movie_catalogue.py
 ```
 
-The script downloads the CMU archive into a temporary cache and looks up supplemental Wikipedia source pages. It writes metadata and binary float32 embeddings into `web/movies/data/`. No API keys are used. The PCA movie map is illustrative; all ranking uses the full 384-dimensional vectors.
+The script downloads the CMU archive into a temporary cache and looks up supplemental Wikipedia source pages. It writes metadata and binary float32 embeddings into `web/movies/data/`. No API keys are used. The three-dimensional PCA movie space is illustrative. All ranking uses the full 384-dimensional vectors.
 
 `evaluation.json` is a small, manually labeled content-relevance suite. Its labels are incomplete and do not establish that real users will enjoy the recommended films. The browser smoke test reports both its retrieval scores and a box-office baseline without tuning or hiding missing catalogue labels.

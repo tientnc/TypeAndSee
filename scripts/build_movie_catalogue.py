@@ -229,15 +229,16 @@ def main():
     vectors = encode(movies, args.model_dir)
     centered = vectors - vectors.mean(axis=0)
     _, axes = np.linalg.eigh(centered.T @ centered)
-    points = centered @ axes[:, -2:]
+    points = centered @ axes[:, -3:]
     bounds = np.quantile(points, [.01, .99], axis=0)
     positions = np.clip((points - bounds[0]) / (bounds[1] - bounds[0]), 0, 1)
     for movie, point in zip(movies, positions):
-        movie["x"], movie["y"] = round(35 + point[0] * 930, 2), round(35 + point[1] * 530, 2)
+        movie["projection"] = [round(float(value), 5) for value in (point - .5) * 2]
+        movie["x"], movie["y"] = round(35 + point[1] * 930, 2), round(35 + point[2] * 530, 2)
     output = ROOT / "web/movies/data"
     output.mkdir(parents=True, exist_ok=True)
     (output / "embeddings.f32").write_bytes(vectors.astype("<f4").tobytes())
-    info = {"model": MODEL, "revision": REVISION, "dtype": "q8", "dimensions": 384, "pooling": "mean", "batchSize": 1, "maxTokens": 256, "modernCount": sum(movie['source'] == 'original-premise' for movie in movies), "count": len(movies), "movies": movies}
+    info = {"model": MODEL, "revision": REVISION, "dtype": "q8", "dimensions": 384, "pooling": "mean", "batchSize": 1, "maxTokens": 256, "projection": "PCA-3D", "modernCount": sum(movie['source'] == 'original-premise' for movie in movies), "count": len(movies), "movies": movies}
     (output / "catalogue.json").write_text(json.dumps(info, ensure_ascii=True, separators=(",", ":")))
     tokenizer = Tokenizer.from_file(str(args.model_dir / "tokenizer.json"))
     tokenizer.enable_truncation(max_length=256)

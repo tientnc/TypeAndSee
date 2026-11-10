@@ -1,9 +1,14 @@
 import {
+  MovieProjector
+} from './projector.js';
+import {
   MovieEngine,
   parseCSV,
   mergeCSV,
   parseRequest
 } from './engine.js';
+
+export let space;
 
 const $ = id => document.getElementById(id);
 const STORAGE = 'typeandsee-movies-v1';
@@ -107,8 +112,10 @@ function loadProfile() {
 export async function setFilm(id, mode) {
   await ready;
   if (!engine.byId.has(id)) return;
-  if (mode === 'remove') delete profile[id];
-  else if (mode === 'watchlist') {
+  if (mode === 'remove') {
+    delete profile[id];
+    if (space?.focused === id) space.focused = null;
+  } else if (mode === 'watchlist') {
     profile[id] = {
       ...(profile[id] || {}),
       watchlist: true
@@ -143,6 +150,7 @@ function renderProfile() {
   if (liked.length > 14) $('favorites').append(element('span', `+ ${liked.length - 14} more favorites in your history`, 'muted'));
   const watched = Object.values(profile).filter(entry => entry.status).length;
   const watchlist = Object.values(profile).filter(entry => entry.watchlist && !entry.status).length;
+  $('list-count').textContent = String(watched);
   $('history-summary').textContent = `Manage history: ${watched} watched, ${liked.length} liked, ${watchlist} on watchlist`;
   renderHistory();
 }
@@ -226,7 +234,7 @@ function chooseTitle(index) {
   $('film-search').value = '';
   closeOptions();
   $('film-search').focus();
-  setFilm(movie.id, 'liked');
+  setFilm(movie.id, 'liked').then(() => space.focus(movie.id)).catch(() => {});
 }
 
 function filters() {
@@ -297,10 +305,6 @@ export async function updateRecommendations() {
   }
 }
 
-function hue(movie) {
-  return [...movie.genres.join('')].reduce((sum, letter) => sum + letter.charCodeAt(0), 0) % 100 + 140;
-}
-
 function renderResults() {
   $('cards').replaceChildren();
   if (!lastResult.results.length) {
@@ -314,10 +318,9 @@ function renderResults() {
     card.dataset.movieId = movie.id;
     const poster = element('button', undefined, 'poster');
     poster.type = 'button';
-    poster.style.setProperty('--hue', hue(movie));
     poster.setAttribute('aria-label', `Details and sources for ${movie.title}`);
     poster.append(element('span', String(movie.year), 'poster-year'), element('h3', movie.title));
-    poster.addEventListener('click', () => openFilm(movie.id));
+    poster.addEventListener('click', () => space.focus(movie.id));
     const body = element('div', undefined, 'card-body');
     body.append(element('div', shortMetadata(movie), 'film-meta'));
     body.append(element('p', item.reasons.slice(0, 2).join(' '), 'match-reason'));
@@ -337,41 +340,15 @@ function renderResults() {
 }
 
 function renderMap() {
-  const svg = $('movie-map');
-  svg.replaceChildren();
-  const recommended = new Set(lastResult.results.map(item => item.movie.id));
-  const namespace = 'http://www.w3.org/2000/svg';
-  for (const movie of engine.movies) {
-    const point = document.createElementNS(namespace, 'circle');
-    point.setAttribute('cx', movie.x);
-    point.setAttribute('cy', movie.y);
-    const type = profile[movie.id]?.status === 'liked' ? 'liked' : recommended.has(movie.id) ? 'recommended' : profile[movie.id]?.status ? 'seen' : '';
-    point.setAttribute('r', type === 'liked' ? '6' : type === 'recommended' ? '5' : '2.5');
-    point.setAttribute('class', `map-dot ${type}`);
-    point.dataset.movieId = movie.id;
-    const title = document.createElementNS(namespace, 'title');
-    title.textContent = `${movie.title} (${movie.year})`;
-    point.append(title);
-    point.addEventListener('click', () => openFilm(movie.id));
-    if (['liked', 'recommended'].includes(type)) {
-      point.setAttribute('tabindex', '0');
-      point.setAttribute('role', 'button');
-      point.setAttribute('aria-label', title.textContent);
-      point.addEventListener('keydown', event => {
-        if (event.key === 'Enter') openFilm(movie.id);
-      });
-    }
-    svg.append(point);
+  space.update(profile, lastResult.results);
+}
+
+function showPanel(name) {
+  for (const panel of ['add', 'list', 'suggestions']) {
+    $(`panel-${panel}`).hidden = panel !== name;
+    $(`tab-${panel}`).setAttribute('aria-selected', String(panel === name));
   }
-  const labels = [...lastResult.anchors.slice(0, 3).map(item => item.movie), ...lastResult.results.slice(0, 3).map(item => item.movie)];
-  for (const movie of labels) {
-    const text = document.createElementNS(namespace, 'text');
-    text.setAttribute('x', Math.min(850, movie.x + 9));
-    text.setAttribute('y', movie.y - 8);
-    text.setAttribute('class', 'map-label');
-    text.textContent = movie.title.length > 26 ? movie.title.slice(0, 24) + '...' : movie.title;
-    svg.append(text);
-  }
+  space?.setSuggestions(name === 'suggestions');
 }
 
 function renderTrace() {
@@ -487,11 +464,12 @@ export function snapshot() {
 
 async function boot() {
   try {
-    const [metadataResponse, vectorResponse] = await Promise.all([fetch(new URL('./data/catalogue.json', import.meta.url)), fetch(new URL('./data/embeddings.f32', import.meta.url))]);
+    const [metadataResponse, vectorResponse] = await Promise.all([fetch(new URL('./data/catalogue.json?projection=3d', import.meta.url)), fetch(new URL('./data/embeddings.f32', import.meta.url))]);
     if (!metadataResponse.ok || !vectorResponse.ok) throw new Error('The film catalogue could not load. Please check your connection and refresh.');
     const [metadata, vectors] = await Promise.all([metadataResponse.json(), vectorResponse.arrayBuffer()]);
     engine = await new MovieEngine(metadata, new Float32Array(vectors)).initialize();
     profile = loadProfile();
+    space = new MovieProjector($('movie-map'), engine.movies, openFilm);
     for (const genre of [...new Set(engine.movies.flatMap(movie => movie.genres))].sort()) {
       const option = element('option', genre);
       option.value = genre;
@@ -535,13 +513,21 @@ $('recommend-form').addEventListener('submit', event => {
   updateRecommendations().catch(() => {});
 });
 for (const id of ['genre', 'runtime', 'min-year', 'max-year', 'watchlist-only']) $(id).addEventListener('change', () => updateRecommendations().catch(() => {}));
-for (const next of ['cards', 'map']) $(`${next}-view`).addEventListener('click', () => {
-  $('cards').hidden = next !== 'cards';
-  $('map-panel').hidden = next !== 'map';
-  for (const button of ['cards', 'map']) {
-    $(`${button}-view`).classList.toggle('selected', button === next);
-    $(`${button}-view`).setAttribute('aria-pressed', String(button === next));
-  }
+for (const panel of ['add', 'list', 'suggestions']) {
+  $(`tab-${panel}`).addEventListener('click', () => showPanel(panel));
+}
+$('show-suggestions').addEventListener('click', () => showPanel('suggestions'));
+$('reset-space').addEventListener('click', () => space?.reset());
+$('zoom-in').addEventListener('click', () => {
+  if (space) space.distance = Math.max(1.6, space.distance - .3);
+});
+$('zoom-out').addEventListener('click', () => {
+  if (space) space.distance = Math.min(7, space.distance + .3);
+});
+$('rotate-space').addEventListener('click', () => {
+  if (!space) return;
+  space.autoRotate = !space.autoRotate;
+  $('rotate-space').setAttribute('aria-pressed', String(space.autoRotate));
 });
 $('csv-files').addEventListener('change', async event => {
   try {
@@ -555,6 +541,7 @@ $('csv-files').addEventListener('change', async event => {
 $('clear-profile').addEventListener('click', async () => {
   if (!confirm('Clear the saved movie history in this browser?')) return;
   profile = {};
+  space.focused = null;
   save();
   renderProfile();
   $('import-report').hidden = true;

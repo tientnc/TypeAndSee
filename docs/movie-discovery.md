@@ -18,7 +18,7 @@ Each normalized 384-dimensional vector encodes the title, grouped genres, detail
 
 An optional description can express a mood. Its first use downloads a quantized text model. Simple requests such as `under 120 minutes`, `before 2000`, and `no horror` also produce explicit filters, shown in the trace. Other language contributes to semantic similarity; it is not guaranteed to become a hard constraint. Use the controls for explicit constraints.
 
-The movie map uses a PCA projection. Its two-dimensional distances are illustrative; recommendations always use the original vectors.
+The main view is a perspective 3D PCA projection with drag rotation, zoom, optional auto rotation, and clickable dots. Add a title in the sidebar to highlight its dot in yellow. Open Suggestions to highlight retrieved films in mint. The sidebar also holds your saved list, CSV import, and filters. Projection changes distances. Recommendations use the original vectors.
 
 ## Explanations and tracing
 
@@ -48,3 +48,9 @@ The evaluation suite in `catalogue/evaluation.json` has a small set of manually 
 The original image demo remains at `web/images/`, and the separate Python image API remains available. The deployed movie app does not require a cloud database, TMDB token, Letterboxd login, or paid billing account.
 
 The recorded demo run in `catalogue/evaluation-results.json` measured mean Recall@12 of 0.493 and NDCG@12 of 0.483 across five labeled queries. The box-office baseline had Recall@12 of 0. Retrieval and reranking took roughly 5-10 ms per query on the test machine, excluding initial loading.
+
+## Catalogue size
+
+The 1,809-film catalogue is a demo selection. Its metadata and embeddings total about 6.3 MB, including 2.8 MB of raw vectors. The underlying source archive has 42,306 plot summaries and 81,741 metadata records. Many metadata records lack a plot. The 103 original supplemental premises extend coverage through 2024.
+
+A 384-dimensional float32 embedding uses 1,536 bytes per film. Vectors for 100,000 films would require about 154 MB before metadata and index overhead. Larger catalogues are feasible. A broader source, incremental downloads, and an efficient retrieval index would help keep initial browser loading responsive.

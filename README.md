@@ -6,11 +6,7 @@
 
 ![Movie recommendations in TypeAndSee](docs/movie-demo.png)
 
-*Your favorites lead to unseen films through plot embeddings, genres, directors, and a diversity pass.*
-
-![The movie embedding map](docs/movie-map.png)
-
-*Explore 1,809 films in an interactive projection. Open a film for matching evidence and source records.*
+*Your films glow yellow. Suggestions glow mint. Drag to rotate the 3D movie space, zoom in, and select a dot to explore.*
 
 Import a Letterboxd CSV, manage watched films, or add a mood and runtime limit. Source-linked matching evidence explains each recommendation. Film history stays in your browser. No account or API key is needed.
 
