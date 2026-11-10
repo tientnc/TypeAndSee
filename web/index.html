@@ -1,28 +1,31 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Search images by meaning with CLIP embeddings, directly in your browser.">
-  <title>TypeAndSee</title>
-  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./style.css">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Type the films you enjoyed. Find your next favorite with personal movie recommendations that run in your browser.">
+  <title>TypeAndSee | Find your next film</title>
+  <link rel="icon" href="./images/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./movies/style.css">
 </head>
-<body>
-  <main class="shell">
-    <header><a class="brand" href="./">TypeAndSee<span class="brand-dot"></span></a><a href="https://github.com/tientnc/TypeAndSee" target="_blank" rel="noreferrer">View source</a></header>
-    <section class="intro"><p class="eyebrow">YOUR WORDS. YOUR IMAGES.</p><h1>Describe it.<br><span>Find it.</span></h1><p class="subtitle">A moment, a color, a feeling. Search images by what they show.</p></section>
-    <section class="search-panel" aria-label="Search your image library">
-      <form id="search-form"><label class="sr-only" for="query">Describe an image</label><input id="query" placeholder="a red bicycle beside a cafe" maxlength="500" required autocomplete="off"><button id="search-button" type="submit">Search</button></form>
-      <div class="suggestions"><span>Try a search</span><button type="button" data-query="a golden dog">a golden dog</button><button type="button" data-query="mountains beside a lake">mountains beside a lake</button><button type="button" data-query="bicycles parked outside">bicycles parked outside</button></div>
-    </section>
-    <section class="toolbar"><div><h2 id="gallery-title">Your collection</h2><span id="count" class="muted">Loading library...</span></div><div class="toolbar-actions"><button id="reset" class="quiet" type="button">Reset to demo</button><label class="import-button" for="files">+ Add photos</label><input id="files" class="sr-only" type="file" accept="image/jpeg,image/png,image/webp" multiple></div></section>
-    <div id="activity" role="status" aria-live="polite"><progress id="progress" hidden></progress><span id="status">Preparing your library...</span></div>
-    <section id="gallery" class="gallery" aria-label="Image results"></section>
-    <details id="trace-panel"><summary>How this search worked</summary><p>CLIP creates image and text embeddings. Orama compares vectors in this browser. The library is saved in IndexedDB on this device.</p><table><thead><tr><th>Step</th><th>Time</th></tr></thead><tbody id="trace"></tbody></table><p class="muted">Similarity measures closeness in embedding space. It is not a confidence score. This demo performs vector retrieval; generated explanations are available only in the separate Python app.</p></details>
-    <footer><p>Photos you add stay in this browser. No sign-in, API key, or server inference.</p><p>The first search downloads the CLIP model. Imports also load its image encoder. Your browser can cache both.</p><p><a href="./credits.html">Sample image credits</a><span> Browser demo | <a href="https://github.com/tientnc/TypeAndSee">Python API also available</a></span></p></footer>
-    <noscript><p>This app needs JavaScript to run its image model and vector search.</p></noscript>
-  </main>
-  <script type="module" src="./app.js"></script>
-</body>
+<body><main class="shell">
+  <header><a class="brand" href="./">TypeAndSee<span></span></a><nav><a class="active" href="./">Movies</a><a href="./images/">Image search</a><a href="https://github.com/tientnc/TypeAndSee" target="_blank" rel="noreferrer">Source</a></nav></header>
+  <section class="hero"><div><p class="eyebrow">A LITTLE LESS SCROLLING. A BETTER NEXT FILM.</p><h1>What have you<br><em>loved lately?</em></h1><p class="subtitle">Type films you enjoyed. Discover something new through their stories,<br class="desktop"> genres, and the connections between them.</p></div><aside class="hero-note"><span class="note-mark">01 / 02 / 03</span><p>Your favorites are the starting point.<br>Your next watch is the discovery.</p><span class="small">No account. No API key. Runs on your device.</span></aside></section>
+  <section class="taste-panel" aria-label="Your film preferences">
+    <label class="input-label" for="film-search">ADD A FILM YOU ENJOYED</label>
+    <div class="picker"><input id="film-search" role="combobox" aria-autocomplete="list" aria-controls="film-options" aria-expanded="false" autocomplete="off" placeholder="Arrival, Parasite, Spirited Away..." maxlength="200"><span class="input-hint">Type a title</span><div id="film-options" class="options" role="listbox" hidden></div></div>
+    <div id="favorites" class="favorites"><span class="muted">Your favorites will appear here.</span></div>
+    <div class="taste-bottom"><div class="presets"><span>Or try a taste</span><button data-preset="scifi" type="button">Dreamlike sci-fi</button><button data-preset="animation" type="button">Animated worlds</button><button data-preset="drama" type="button">Human connections</button></div><label class="csv-link" for="csv-files">Import Letterboxd CSV</label><input id="csv-files" type="file" accept=".csv,text/csv" multiple class="sr-only"></div>
+    <details id="history"><summary id="history-summary">Manage watched films and ratings</summary><p class="muted">Liked films guide your taste. Watched and disliked films stay out of recommendations. Unrated watched imports are not treated as likes.</p><input id="history-search" placeholder="Find a film in your history" aria-label="Find a film in your history"><div id="history-list"></div><button id="clear-profile" class="text-button" type="button">Clear my film history</button></details>
+    <details id="import-report" hidden><summary id="import-summary"></summary><p id="import-detail" class="muted"></p><ul id="unmatched"></ul><p class="muted">Choose watched.csv and ratings.csv from your Letterboxd export. watchlist.csv is also supported. Unmatched or ambiguous titles are reported, not guessed.</p></details>
+  </section>
+  <form id="recommend-form" class="request-panel"><label class="input-label" for="mood">WHAT ARE YOU IN THE MOOD FOR? <span>OPTIONAL</span></label><div class="request-row"><input id="mood" placeholder="Something thoughtful and hopeful, under 120 minutes..." maxlength="300"><button id="recommend-button" class="primary" type="submit">Find my next film</button></div><p class="hint">A description loads a small text model on first use. Recommendations from selected films work immediately.</p></form>
+  <section class="controls" aria-label="Recommendation filters"><label>Genre<select id="genre"><option value="">Any genre</option></select></label><label>Length<select id="runtime"><option value="">Any length</option><option value="90">90 min or less</option><option value="120">120 min or less</option><option value="150">150 min or less</option></select></label><label>From year<input id="min-year" type="number" min="1900" max="2026" placeholder="1900"></label><label>Through year<input id="max-year" type="number" min="1900" max="2026" placeholder="2026"></label><label class="checkbox-label"><input id="watchlist-only" type="checkbox"> My watchlist only</label><div class="view-toggle" role="group" aria-label="Display mode"><button id="cards-view" class="selected" type="button" aria-pressed="true">Cards</button><button id="map-view" type="button" aria-pressed="false">Movie map</button></div></section>
+  <section class="results-header"><div><p class="eyebrow" id="result-eyebrow">THE STARTING POINT</p><h2 id="result-heading">Explore the catalogue</h2></div><span id="catalogue-count" class="muted">Loading films...</span></section>
+  <div id="activity" role="status" aria-live="polite"><progress id="progress" hidden></progress><span id="status">Building the local movie index...</span></div>
+  <section id="cards" class="cards" aria-label="Movie recommendations"></section>
+  <section id="map-panel" hidden><div class="map-description"><span><i class="legend liked"></i> Your favorites</span><span><i class="legend recommended"></i> Recommendations</span><span><i class="legend other"></i> Other films</span></div><svg id="movie-map" viewBox="0 0 1000 600" role="img" aria-label="Interactive projection of movie embeddings"></svg><p class="hint">A two-dimensional projection of plot embeddings. Click a film to inspect it. The projection distorts distances; recommendations use the full 384-dimensional space.</p></section>
+  <details id="trace-panel"><summary>Inside this recommendation</summary><p id="trace-summary" class="muted"></p><table><thead><tr><th>Step</th><th>Time</th><th>Items</th></tr></thead><tbody id="trace"></tbody></table><p id="applied-filters" class="muted"></p><p class="muted">Similar content does not guarantee similar enjoyment. These are content-based recommendations, not predictions learned from other viewers' ratings. Model API cost per request: $0. Your device performs the computation.</p></details>
+  <footer><p id="coverage">A starter catalogue with source-linked plot records.</p><p>Film history stays in this browser. No Letterboxd login or scraping. Clearing site data removes your saved preferences.</p><p><a href="./movies/credits.html">Data, model, and license credits</a><a href="./images/">Try image search</a></p></footer>
+  <dialog id="film-dialog"><button id="close-dialog" class="close-dialog" aria-label="Close film details" type="button">Close</button><div id="film-detail"></div><div id="film-actions" class="film-actions"></div><section><h3>Why this film?</h3><div id="evidence"></div></section></dialog>
+  <noscript><p>TypeAndSee needs JavaScript for its local movie database and recommendations.</p></noscript>
+</main><script type="module" src="./movies/app.js"></script></body>
 </html>

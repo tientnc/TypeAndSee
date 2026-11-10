@@ -1,0 +1,11 @@
+{
+  "description": "Small manually labeled content-relevance suite. Labels are not exhaustive and do not measure personal enjoyment.",
+  "k": 12,
+  "cases": [
+    {"seed": ["Arrival", 2016], "relevant": [["Contact", 1997], ["Close Encounters of the Third Kind", 1977], ["The Day the Earth Stood Still", 1951], ["Interstellar", 2014], ["2001: A Space Odyssey", 1968], ["The Man from Earth", 2007], ["Annihilation", 2018], ["Solaris", 1972]]},
+    {"seed": ["Spirited Away", 2001], "relevant": [["Howl's Moving Castle", 2004], ["Princess Mononoke", 1997], ["My Neighbor Totoro", 1988], ["Kiki's Delivery Service", 1989], ["Coco", 2017], ["Suzume", 2022], ["The Boy and the Heron", 2023]]},
+    {"seed": ["Memento", 2000], "relevant": [["Inception", 2010], ["Shutter Island", 2010], ["The Machinist", 2004], ["Fight Club", 1999], ["The Prestige", 2006], ["Coherence", 2013], ["Predestination", 2014]]},
+    {"seed": ["The Grand Budapest Hotel", 2014], "relevant": [["Moonrise Kingdom", 2012], ["The Royal Tenenbaums", 2001], ["The Darjeeling Limited", 2007], ["The French Dispatch", 2021], ["Fantastic Mr. Fox", 2009], ["The Life Aquatic with Steve Zissou", 2004], ["Knives Out", 2019]]},
+    {"seed": ["Before Sunrise", 1995], "relevant": [["Before Sunset", 2004], ["Before Midnight", 2013], ["Past Lives", 2023], ["Lost in Translation", 2003], ["Her", 2013], ["In the Mood for Love", 2000]]}
+  ]
+}

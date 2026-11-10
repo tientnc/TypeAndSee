@@ -91,7 +91,7 @@ def main():
     args = parser.parse_args()
     server = None
     if not args.url:
-        handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(ROOT / 'web'))
+        handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(ROOT / 'web/images'))
         server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), handler)
         threading.Thread(target=server.serve_forever, daemon=True).start()
         url = f'http://127.0.0.1:{server.server_port}/'
@@ -120,7 +120,7 @@ def main():
             if state.get('error'):
                 raise RuntimeError(state)
             output = browser.evaluate('JSON.stringify(window.seedOutput)')
-            (ROOT / 'web/demo/collection.json').write_text(output + '\n')
+            (ROOT / 'web/images/demo/collection.json').write_text(output + '\n')
             print('Saved demo embeddings', len(json.loads(output)), flush=True)
             previous_origin = browser.evaluate('performance.timeOrigin')
             browser.call('Page.reload', {'ignoreCache': True})
@@ -143,7 +143,7 @@ def main():
         def upload():
             root = browser.call('DOM.getDocument')['root']['nodeId']
             node = browser.call('DOM.querySelector', {'nodeId': root, 'selector': '#files'})['nodeId']
-            browser.call('DOM.setFileInputFiles', {'nodeId': node, 'files': [str(ROOT / 'web/demo/dog.jpg')]})
+            browser.call('DOM.setFileInputFiles', {'nodeId': node, 'files': [str(ROOT / 'web/images/demo/dog.jpg')]})
         upload()
         browser.wait("document.getElementById('status')?.textContent?.startsWith('Added 1 photo')")
         assert browser.evaluate("document.querySelectorAll('.card').length") == 6

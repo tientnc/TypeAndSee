@@ -1,0 +1,149 @@
+{
+  "measured_at": "2026-11-10",
+  "environment": "Chrome headless, CPU, Linux. Retrieval timing excludes catalogue loading and optional request model download.",
+  "catalogue_count": 1809,
+  "catalogue_sha256": "4c7360632e18f31267397eef1807068d874d37d08d7cae0d7603429b3103bf62",
+  "description": "Small manually labeled content-relevance suite. Labels are not exhaustive and do not measure personal enjoyment.",
+  "k": 12,
+  "details": [
+    {
+      "seed": "Arrival",
+      "ranked": [
+        "Predestination",
+        "Dune",
+        "Incendies",
+        "Interstellar",
+        "Blade Runner 2049",
+        "Annihilation",
+        "Coherence",
+        "Aftersun",
+        "Nope",
+        "Via Darjeeling",
+        "Her",
+        "Knowing"
+      ],
+      "missingLabels": [],
+      "latency_ms": 9.599999964237213,
+      "content": {
+        "recall": 0.25,
+        "ndcg": 0.19903650127012357
+      },
+      "box_office_baseline": {
+        "recall": 0,
+        "ndcg": 0
+      }
+    },
+    {
+      "seed": "Spirited Away",
+      "ranked": [
+        "My Neighbor Totoro",
+        "Ponyo",
+        "Kiki's Delivery Service",
+        "Howl's Moving Castle",
+        "The Boy and the Heron",
+        "Princess Mononoke",
+        "Pok\u00e9mon: Spell Of The Unown",
+        "Return to Never Land",
+        "Tokyo Story",
+        "Toy Story 3",
+        "Journey Back to Oz",
+        "Suzume"
+      ],
+      "missingLabels": [],
+      "latency_ms": 8,
+      "content": {
+        "recall": 0.8571428571428571,
+        "ndcg": 0.8092289716095044
+      },
+      "box_office_baseline": {
+        "recall": 0,
+        "ndcg": 0
+      }
+    },
+    {
+      "seed": "Memento",
+      "ranked": [
+        "Memories of Murder",
+        "Insomnia",
+        "Identity",
+        "Rising Sun",
+        "State of Play",
+        "Edge of Darkness",
+        "The Client",
+        "Taking Lives",
+        "Premonition",
+        "Saw",
+        "Inception",
+        "The Girl Who Played with Fire"
+      ],
+      "missingLabels": [],
+      "latency_ms": 7.199999988079071,
+      "content": {
+        "recall": 0.14285714285714285,
+        "ndcg": 0.07667481399289292
+      },
+      "box_office_baseline": {
+        "recall": 0,
+        "ndcg": 0
+      }
+    },
+    {
+      "seed": "The Grand Budapest Hotel",
+      "ranked": [
+        "The French Dispatch",
+        "The Darjeeling Limited",
+        "Asteroid City",
+        "The Royal Tenenbaums",
+        "The Life Aquatic with Steve Zissou",
+        "The Menu",
+        "The Big Short",
+        "Paddington 2",
+        "A Real Pain",
+        "Hotel for Dogs",
+        "The Kid",
+        "Moonrise Kingdom"
+      ],
+      "missingLabels": [],
+      "latency_ms": 5.599999964237213,
+      "content": {
+        "recall": 0.7142857142857143,
+        "ndcg": 0.7473055367906306
+      },
+      "box_office_baseline": {
+        "recall": 0,
+        "ndcg": 0
+      }
+    },
+    {
+      "seed": "Before Sunrise",
+      "ranked": [
+        "Before Sunset",
+        "Before Midnight",
+        "American Beauty",
+        "Never Been Kissed",
+        "Coming to America",
+        "About a Boy",
+        "The Mirror Has Two Faces",
+        "Intolerable Cruelty",
+        "Lost in Translation",
+        "She's All That",
+        "Sideways",
+        "Waiting to Exhale"
+      ],
+      "missingLabels": [],
+      "latency_ms": 5.5,
+      "content": {
+        "recall": 0.5,
+        "ndcg": 0.5846156829012061
+      },
+      "box_office_baseline": {
+        "recall": 0,
+        "ndcg": 0
+      }
+    }
+  ],
+  "mean_recall_at_k": 0.4928571428571429,
+  "mean_ndcg_at_k": 0.4833723013128715,
+  "baseline_mean_recall_at_k": 0,
+  "external_model_cost_per_query_usd": 0
+}

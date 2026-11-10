@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Search images by meaning with CLIP embeddings, directly in your browser.">
+  <title>TypeAndSee</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main class="shell">
+    <header><a class="brand" href="../">TypeAndSee<span class="brand-dot"></span></a><a href="../">Movie discovery</a><a href="https://github.com/tientnc/TypeAndSee" target="_blank" rel="noreferrer">View source</a></header>
+    <section class="intro"><p class="eyebrow">YOUR WORDS. YOUR IMAGES.</p><h1>Describe it.<br><span>Find it.</span></h1><p class="subtitle">A moment, a color, a feeling. Search images by what they show.</p></section>
+    <section class="search-panel" aria-label="Search your image library">
+      <form id="search-form"><label class="sr-only" for="query">Describe an image</label><input id="query" placeholder="a red bicycle beside a cafe" maxlength="500" required autocomplete="off"><button id="search-button" type="submit">Search</button></form>
+      <div class="suggestions"><span>Try a search</span><button type="button" data-query="a golden dog">a golden dog</button><button type="button" data-query="mountains beside a lake">mountains beside a lake</button><button type="button" data-query="bicycles parked outside">bicycles parked outside</button></div>
+    </section>
+    <section class="toolbar"><div><h2 id="gallery-title">Your collection</h2><span id="count" class="muted">Loading library...</span></div><div class="toolbar-actions"><button id="reset" class="quiet" type="button">Reset to demo</button><label class="import-button" for="files">+ Add photos</label><input id="files" class="sr-only" type="file" accept="image/jpeg,image/png,image/webp" multiple></div></section>
+    <div id="activity" role="status" aria-live="polite"><progress id="progress" hidden></progress><span id="status">Preparing your library...</span></div>
+    <section id="gallery" class="gallery" aria-label="Image results"></section>
+    <details id="trace-panel"><summary>How this search worked</summary><p>CLIP creates image and text embeddings. Orama compares vectors in this browser. The library is saved in IndexedDB on this device.</p><table><thead><tr><th>Step</th><th>Time</th></tr></thead><tbody id="trace"></tbody></table><p class="muted">Similarity measures closeness in embedding space. It is not a confidence score. This demo performs vector retrieval; generated explanations are available only in the separate Python app.</p></details>
+    <footer><p>Photos you add stay in this browser. No sign-in, API key, or server inference.</p><p>The first search downloads the CLIP model. Imports also load its image encoder. Your browser can cache both.</p><p><a href="./credits.html">Sample image credits</a><span> Browser demo | <a href="https://github.com/tientnc/TypeAndSee">Python API also available</a></span></p></footer>
+    <noscript><p>This app needs JavaScript to run its image model and vector search.</p></noscript>
+  </main>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

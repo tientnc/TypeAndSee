@@ -1,20 +1,23 @@
 # TypeAndSee
 
-Search photos with a description, such as **"a red bicycle beside a café"**.
+**Type films you loved. Find your next watch.**
 
-[Open the browser demo](https://tientnc.github.io/TypeAndSee/). Search runs on your device, with no account or API key.
+[Open TypeAndSee](https://tientnc.github.io/TypeAndSee/)
 
-![TypeAndSee browser search](docs/browser-demo.png)
+![Movie recommendations in TypeAndSee](docs/movie-demo.png)
 
-*Live browser search. [Sample image credits](web/credits.html).*
+*Your favorites lead to unseen films through plot embeddings, genres, directors, and a diversity pass.*
 
-![Image search flow](docs/flow.svg)
+![The movie embedding map](docs/movie-map.png)
 
-*Browser demo: CLIP and Orama. Python API: CLIP with Chroma or Firestore, plus optional grounded explanations.*
+*Explore 1,809 films in an interactive projection. Open a film for matching evidence and source records.*
+
+Import a Letterboxd CSV, manage watched films, or add a mood and runtime limit. Source-linked matching evidence explains each recommendation. Film history stays in your browser. No account or API key is needed.
 
 ```bash
-uv sync --extra test
-uv run uvicorn typeandsee.api:app --reload
+python3 -m http.server 8000 --directory web
 ```
 
-Open [localhost:8000](http://localhost:8000). See the [Python app guide](docs/guide.md) for imports, evaluation, and tracing, or the [browser demo guide](docs/browser-demo.md) for the free static deployment.
+Open [localhost:8000](http://localhost:8000). [Movie app and evaluation](docs/movie-discovery.md) | [Data credits](catalogue/README.md)
+
+The original [image search demo](https://tientnc.github.io/TypeAndSee/web/images/) and [Python image API](docs/guide.md) are also available.
